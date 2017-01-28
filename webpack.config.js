@@ -51,10 +51,12 @@ module.exports = {
         })
     ],
 
+    /*
+     * Settings for dev server
+     * enable source maps and tell dev server to inline HMR (no iframe kicky mouseing)
+     */
     devtool: 'source-map',
     devServer: {
-        inline: true,
-        historyApiFallback: true,
-        hot: true
+        inline: true
     }
 };

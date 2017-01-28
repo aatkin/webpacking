@@ -1,0 +1,29 @@
+{
+  "name": "wworkers",
+  "version": "0.0.1",
+  "description": "Web workers test",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-dev": "node node_modules/webpack-dev-server/bin/webpack-dev-server.js --content-base dist/",
+    "build": "node node_modules/webpack/bin/webpack.js",
+    "serve": "node app.js"
+  },
+  "author": "Anssi Kinnunen",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0",
+    "pako": "^1.0.4",
+    "webpack": "^1.14.0"
+  },
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "html-webpack-plugin": "^2.26.0",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-hot-middleware": "^2.15.0",
+    "webpack-livereload-plugin": "^0.10.0",
+    "worker-loader": "^0.7.1"
+  }
+}

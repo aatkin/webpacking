@@ -1,9 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = {
     entry: {
@@ -29,6 +27,9 @@ module.exports = {
                     presets: ['es2015']
                 }
             },
+            /*
+             * Used to allow EJS-template into dependency tree (makes HMR play nicely)
+             */
             {
                 test: /\.ejs$/,
                 loader: 'ejs-loader'
@@ -37,6 +38,9 @@ module.exports = {
                 test: /\.scss$/,
                 loaders: ['style-loader', 'css-loader', 'sass-loader']
             },
+            /*
+             * ExtractTextPlugin is apparently unusable with HMR, production only?
+             */
             // {
             //     test: /\.scss$/,
             //     loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
@@ -50,7 +54,12 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
+
+        /*
+         * ExtractTextPlugin is apparently unusable with HMR, production only?
+         */
         // new ExtractTextPlugin("[name].css", { allChunks: true }),
+
         /*
          * HtmlWebpackPlugin automatically builds html file based on the template (which can be in just about any templating language, i think)
          * this removes the need to manually insert any script or css tags

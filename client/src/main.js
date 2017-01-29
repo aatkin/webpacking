@@ -7,6 +7,7 @@ const cb = (event) => {
     }
 };
 
+// when module is reloaded, dispose of existing click listener on the button element
 if (module.hot) {
     module.hot.accept();
     module.hot.dispose(() => {

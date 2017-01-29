@@ -8,8 +8,8 @@ const config = require('./webpack.config');
 const app = express();
 const compiler = webpack(config);
 
-app.use(webpackHotMiddleware(compiler));
 app.use(webpackDevMiddleware(compiler));
+app.use(webpackHotMiddleware(compiler));
 
 app.get('/', (req, res) => {
   const htmlBuffer = devMiddleware.fileSystem.readFileSync(`${config.output.path}/index.html`);

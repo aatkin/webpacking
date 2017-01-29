@@ -2,17 +2,22 @@ const path = require("path");
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const LiveReloadPlugin = require('webpack-livereload-plugin');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = {
     entry: {
-        app: ['webpack-hot-middleware/client', './client/index.js']
+        client: [
+            'webpack-hot-middleware/client',
+            'webpack/hot/dev-server',
+            './client/src/index.js'
+        ]
     },
     output: {
-        devtoolLineToLine: true,
-        sourceMapFilename: './bundle.js.map',
-        pathinfo: true,
+        sourceMapFilename: '[name].map',
         path: __dirname + "/dist",
-        filename: "bundle.js"
+        filename: "[name].js",
+        chunkFilename: "[id].js"
     },
     module: {
         loaders: [
@@ -23,7 +28,19 @@ module.exports = {
                 query: {
                     presets: ['es2015']
                 }
-            }
+            },
+            {
+                test: /\.ejs$/,
+                loader: 'ejs-loader'
+            },
+            {
+                test: /\.scss$/,
+                loaders: ['style-loader', 'css-loader', 'sass-loader']
+            },
+            // {
+            //     test: /\.scss$/,
+            //     loader: ExtractTextPlugin.extract("style-loader", "css-loader!sass-loader")
+            // }
         ],
     },
     plugins: [
@@ -33,21 +50,14 @@ module.exports = {
         new webpack.optimize.OccurenceOrderPlugin(),
         new webpack.HotModuleReplacementPlugin(),
         new webpack.NoErrorsPlugin(),
+        // new ExtractTextPlugin("[name].css", { allChunks: true }),
         /*
          * HtmlWebpackPlugin automatically builds html file based on the template (which can be in just about any templating language, i think)
          * this removes the need to manually insert any script or css tags
          */
         new HtmlWebpackPlugin({
-            title: 'Wworker test',
             template: './views/index.ejs',
             inject: 'body'
-        }),
-        /*
-         * Livereload handles HTML && CSS changes, which the webpack dev server cannot handle
-         * Basically CSS styles are reloaded without refresh, and HTML causes page refresh
-         */
-        new LiveReloadPlugin({
-            appendScriptTag: true
         })
     ],
 
@@ -57,6 +67,17 @@ module.exports = {
      */
     devtool: 'source-map',
     devServer: {
-        inline: true
+        inline: true,
+        hot: true
+    },
+
+    /*
+     * Web worker settings
+     */
+    worker: {
+        output: {
+            filename: '[name].worker.js',
+            chunkFilename: '[name].worker.js'
+        }
     }
 };
